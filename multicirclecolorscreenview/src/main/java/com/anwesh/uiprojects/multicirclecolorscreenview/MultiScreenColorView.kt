@@ -38,7 +38,7 @@ fun Canvas.drawCircleScreen(i : Int, size : Float, sc1 : Float, sc2 : Float, sho
 }
 
 fun Canvas.drawMultiCircleScreen(i : Int, size : Float, sc1 : Float, sc2 : Float, shouldFill: Boolean, paint : Paint) {
-    for (j in 0..(colors.size - 1)) {
+    for (j in 0..(circles - 1)) {
         paint.color = Color.parseColor(colors[i])
         drawCircleScreen(j, size, sc1.divideScale(0, 2), sc2.divideScale(1, 2), shouldFill, paint)
     }
@@ -217,7 +217,7 @@ class MultiScreenColorView(ctx : Context) : View(ctx) {
         fun create(activity : Activity) : MultiScreenColorView {
             val view : MultiScreenColorView = MultiScreenColorView(activity)
             activity.setContentView(view)
-            return view 
+            return view
         }
     }
 }
