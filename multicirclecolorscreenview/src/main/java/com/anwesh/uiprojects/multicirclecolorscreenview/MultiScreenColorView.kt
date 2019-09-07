@@ -211,4 +211,13 @@ class MultiScreenColorView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity : Activity) : MultiScreenColorView {
+            val view : MultiScreenColorView = MultiScreenColorView(activity)
+            activity.setContentView(view)
+            return view 
+        }
+    }
 }
