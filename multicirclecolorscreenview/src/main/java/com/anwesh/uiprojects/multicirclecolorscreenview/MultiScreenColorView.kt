@@ -14,6 +14,7 @@ val circles : Int = 5
 val scGap : Float = 0.01f
 val colors : Array<String> = arrayOf("#311B92", "#00C853", "#f44336", "#0D47A1", "#F57F17")
 val delay : Long = 20
+val backColor : Int = Color.parseColor("#BDBDBD")
 
 fun Int.inverse() : Float = 1f / this
 fun Float.maxScale(i : Int, n : Int) : Float = Math.max(0f, this - i * n.inverse())
@@ -186,5 +187,27 @@ class MultiScreenColorView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
 
+    }
+
+    data class Renderer(var view : MultiScreenColorView) {
+
+        private val animator : Animator = Animator(view)
+        private val mccs : MultiCircleColorScreen = MultiCircleColorScreen(0)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(backColor)
+            mccs.draw(canvas, paint)
+            animator.animate {
+                mccs.update {
+                    animator.start()
+                }
+            }
+        }
+
+        fun handleTap() {
+            mccs.startUpdating {
+                animator.start()
+            }
+        }
     }
 }
