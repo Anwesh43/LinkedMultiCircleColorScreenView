@@ -18,12 +18,12 @@ val backColor : Int = Color.parseColor("#BDBDBD")
 
 fun Int.inverse() : Float = 1f / this
 fun Float.maxScale(i : Int, n : Int) : Float = Math.max(0f, this - i * n.inverse())
-fun Float.divideScale(i : Int, n : Int) : Float = Math.min(n.inverse(), maxScale(i, n))
+fun Float.divideScale(i : Int, n : Int) : Float = Math.min(n.inverse(), maxScale(i, n)) * n
 
 fun Canvas.drawCircleScreen(i : Int, size : Float, sc1 : Float, sc2 : Float, shouldFill : Boolean, paint : Paint) {
     var w : Float = 0f
     if (sc2 > 0f) {
-        w = 2 * size * sc2
+        w = 2 * size * sc2.divideScale(i, circles)
     }
     if (shouldFill) {
         w = 2 * size
@@ -33,14 +33,14 @@ fun Canvas.drawCircleScreen(i : Int, size : Float, sc1 : Float, sc2 : Float, sho
     val path : Path = Path()
     path.addCircle(0f, 0f, size, Path.Direction.CW)
     clipPath(path)
-    drawRect(RectF(-size + 2 * size * sc1, -size, -size + w, size), paint)
+    drawRect(RectF(-size + 2 * size * sc1.divideScale(i, circles), -size, -size + w, size), paint)
     restore()
 }
 
 fun Canvas.drawMultiCircleScreen(i : Int, size : Float, sc1 : Float, sc2 : Float, shouldFill: Boolean, paint : Paint) {
     for (j in 0..(circles - 1)) {
         paint.color = Color.parseColor(colors[i])
-        drawCircleScreen(j, size, sc1.divideScale(0, 2), sc2.divideScale(1, 2), shouldFill, paint)
+        drawCircleScreen(j, size, sc1, sc2, shouldFill, paint)
     }
 }
 
